@@ -117,21 +117,25 @@
         <div class="rel-line"></div>
         <div class="rel-note">貸出履歴は図書ごとに<br>複数あってよい</div>
       </div>
-      <div class="classbox">
-        <div class="cname">貸出管理（LoanManager）</div>
-        <div class="cattrs">（サービス層）</div>
-        <div class="cmethods">+ 貸出を登録する()
+      <div class="classbox-stack">
+        <div class="classbox">
+          <div class="cname">貸出管理（LoanManager）</div>
+          <div class="cattrs">（サービス層）</div>
+          <div class="cmethods">+ 貸出を登録する()
 + 返却を登録する()
 + 貸出一覧を取得する()</div>
-      </div>
-      <div class="rel">
-        <div class="rel-tag">依存</div>
-        <div class="rel-line to-inherit"></div>
-        <div class="rel-note">LoanManagerは<br>利用者・図書・貸出を使う</div>
-      </div>
-      <div class="classbox">
-        <div class="cname">図書DB / 画面入力</div>
-        <div class="cattrs">※ 図は省略し文章で定義する対象</div>
+        </div>
+        <div class="rel-vert">
+          <div class="rel-vert-line"></div>
+          <div class="rel-vert-label">
+            <span class="rel-tag">依存</span>
+            <span class="rel-note">LoanManagerは<br>利用者・図書・貸出を使う</span>
+          </div>
+        </div>
+        <div class="classbox">
+          <div class="cname">図書DB / 画面入力</div>
+          <div class="cattrs">※ 図は省略し文章で定義する対象</div>
+        </div>
       </div>
     </div>
     <div class="figure-caption">図：クラス図（抜粋）　属性名はテーブル定義書（配布資料03）の列名と一致させています</div>
@@ -166,16 +170,16 @@
       <div class="msg" style="left:60%; right:14%; top:128px;">
         <span class="lbl">利用者・図書の確認SQL</span>
       </div>
-      <div class="msg reply" style="left:86%; right:40%; top:150px;">
+      <div class="msg reply" style="left:60%; right:14%; top:150px;">
         <span class="lbl">確認結果（OK）</span>
       </div>
       <div class="msg" style="left:60%; right:14%; top:174px;">
         <span class="lbl">貸出INSERT＋図書状態UPDATE</span>
       </div>
-      <div class="msg reply" style="left:86%; right:40%; top:196px;">
+      <div class="msg reply" style="left:60%; right:14%; top:196px;">
         <span class="lbl">登録完了</span>
       </div>
-      <div class="msg reply" style="left:60%; right:68%; top:220px;">
+      <div class="msg reply" style="left:32%; right:40%; top:220px;">
         <span class="lbl">登録結果（成功）</span>
       </div>
     </div>
@@ -196,25 +200,25 @@
       <div class="act-diamond">
         <div class="dia"></div>
         <div class="lbl">入力は正しい？</div>
+        <div class="act-branch-no">No：エラー表示して終了 →</div>
       </div>
-      <div class="act-branch">No：エラー表示して終了（右に分岐）</div>
-      <div class="act-arrow"></div>
+      <div class="act-arrow"><span class="act-arrow-label">Yes</span></div>
       <div class="act-step">② 利用者を照会（存在・貸出可否）</div>
       <div class="act-arrow"></div>
       <div class="act-diamond">
         <div class="dia"></div>
         <div class="lbl">貸出できる利用者？</div>
+        <div class="act-branch-no">No：「貸出できません」表示して終了 →</div>
       </div>
-      <div class="act-branch">No：「貸出できません」表示して終了</div>
-      <div class="act-arrow"></div>
+      <div class="act-arrow"><span class="act-arrow-label">Yes</span></div>
       <div class="act-step">③ 図書を照会（存在・貸出中でない）</div>
       <div class="act-arrow"></div>
       <div class="act-diamond">
         <div class="dia"></div>
         <div class="lbl">貸出できる図書？</div>
+        <div class="act-branch-no">No：「貸出できません」表示して終了 →</div>
       </div>
-      <div class="act-branch">No：「貸出できません」表示して終了</div>
-      <div class="act-arrow"></div>
+      <div class="act-arrow"><span class="act-arrow-label">Yes</span></div>
       <div class="act-step">④ 貸出登録＋図書状態を「貸出中」に更新</div>
       <div class="act-arrow"></div>
       <div class="act-step">⑤ 完了メッセージ表示 → トップへ遷移</div>

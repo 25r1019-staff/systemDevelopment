@@ -413,7 +413,8 @@ td.code, th.code {
   min-width: 68px;
 }
 
-.rel .rel-tag {
+.rel .rel-tag,
+.rel-vert-label .rel-tag {
   font-size: 0.7rem;
   color: #0f766e;
   background: #ecfdf5;
@@ -437,12 +438,51 @@ td.code, th.code {
   background-position: center;
 }
 
-.rel .rel-note {
+.rel .rel-note,
+.rel-vert-label .rel-note {
   font-size: 0.72rem;
   color: #64748b;
   margin-top: 2px;
   text-align: center;
   white-space: nowrap;
+}
+
+.classbox-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.rel-vert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.rel-vert-line {
+  width: 0;
+  height: 24px;
+  border-left: 1.5px solid transparent;
+  background-image: linear-gradient(to bottom, #334155, #334155);
+  background-size: 1.5px 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.rel-vert-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.rel-vert-label .rel-note {
+  text-align: left;
+  white-space: normal;
+  margin-top: 0;
 }
 
 .classdia-note {
@@ -595,10 +635,16 @@ td.code, th.code {
 .act-diamond .dia {
   position: absolute;
   inset: 0;
+  background: #334155;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.act-diamond .dia::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
   background: #ffffff;
-  border: 1.5px solid #334155;
-  transform: rotate(45deg);
-  border-radius: 3px;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .act-diamond .lbl {
@@ -632,10 +678,27 @@ td.code, th.code {
   border-top: 6px solid #334155;
 }
 
-.act-branch {
+.act-branch-no {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  margin-left: 14px;
   font-size: 0.72rem;
-  color: #0f766e;
   font-weight: 700;
+  color: #b91c1c;
+  white-space: nowrap;
+}
+
+.act-arrow-label {
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  transform: translate(-100%, -50%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0f766e;
+  white-space: nowrap;
 }
 
 /* --- 本格版共通の追加要素 --- */
