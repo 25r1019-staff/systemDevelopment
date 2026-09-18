@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料05 テストケース（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　テストケース（抜粋）</div>
+      <div class="doc-code">Ver 1.0　対象：S03 貸出登録・結合テスト</div>
+    </div>
+
+    <p><span class="badge">見本</span>　※研修用の架空の設計書です。</p>
+
+    <h2 class="doc-headline">1. テストの考え方（この文書の全体的な方針）</h2>
+    <p>
+      テストは「正しく動くことの証拠」です。手順どおりに操作して、結果が期待結果と一致すればOK、
+      一致しなければNG=障害として障害報告書（配布資料06）に記録します。テストを実行したら
+      画面のキャプチャ（エビデンス）を保存し、結果欄にファイル名を残します。
+    </p>
+
+    <h2 class="doc-headline">2. 単体テスト（関数の確認）　…　抽出3件</h2>
+    <table>
+      <tr><th style="width:10%;">ケースID</th><th style="width:18%;">対象</th><th style="width:22%;">種別</th><th>入力値</th><th>期待結果</th></tr>
+      <tr>
+        <td class="code">UT-001</td><td>貸出期限の計算</td><td>正常系</td><td class="code">loanDate=2026/05/20</td>
+        <td>返却期限が 2026/06/03（+14日）になる</td>
+      </tr>
+      <tr>
+        <td class="code">UT-002</td><td>入力形式チェック</td><td>異常系</td><td class="code">userId='ab1'（半角英数字5桁でない）</td>
+        <td>「半角英数字5桁で入力してください」を返す</td>
+      </tr>
+      <tr>
+        <td class="code">UT-003</td><td>入力形式チェック</td><td>境界値</td><td class="code">userId='AB123'（ちょうど5桁）</td>
+        <td>チェックを通過する</td>
+      </tr>
+    </table>
+
+    <h2 class="doc-headline">3. 結合テスト（画面を通した確認）　…　抽出8件</h2>
+    <table>
+      <tr><th style="width:10%;">ケースID</th><th style="width:24%;">確認するもの</th><th style="width:36%;">操作手順</th><th>期待結果</th></tr>
+      <tr>
+        <td class="code">CT-001</td><td>正常系：貸出が完了する</td>
+        <td>①S03を開く ②利用者ID「U0001」を入力 ③図書ID「B009」（貸出可）を入力 ④貸出登録ボタンを押す</td>
+        <td>「貸出登録が完了しました」と表示され、トップ画面で該当図書が貸出中になる</td>
+      </tr>
+      <tr>
+        <td class="code">CT-002</td><td>異常系：存在しない利用者</td>
+        <td>②利用者ID「U9999」を入力 ③図書ID「B009」を入力 ④貸出登録ボタンを押す</td>
+        <td>「利用者IDが見つかりません」と表示され、登録されない</td>
+      </tr>
+      <tr>
+        <td class="code">CT-003</td><td>異常系：貸出中の図書</td>
+        <td>②利用者ID「U0001」を入力 ③図書ID「B001」（貸出中）を入力 ④貸出登録ボタンを押す</td>
+        <td>「この図書は現在貸出できません」と表示され、登録されない</td>
+      </tr>
+      <tr>
+        <td class="code">CT-004</td><td>異常系：利用停止中</td>
+        <td>②利用者ID「U0002」（利用停止中）を入力 ③図書ID「B009」を入力 ④貸出登録ボタンを押す</td>
+        <td>「この利用者は貸出できません」と表示され、登録されない</td>
+      </tr>
+      <tr>
+        <td class="code">CT-005</td><td>異常系：未入力</td>
+        <td>②利用者IDを空のまま ③図書ID「B009」を入力 ④貸出登録ボタンを押す</td>
+        <td>「利用者IDを入力してください」と表示され、登録されない</td>
+      </tr>
+      <tr>
+        <td class="code">CT-006</td><td>境界値：入力ちょうど5桁・4桁</td>
+        <td>②「AB123」入力、③「B009」入力で貸出登録</td>
+        <td>チェックを通過する（正常に登録される）</td>
+      </tr>
+      <tr>
+        <td class="code">CT-007</td><td>他機能との結合（一覧表示への反映）</td>
+        <td>CT-001の完了後、トップ画面（S01）を開き直す</td>
+        <td>一覧の先頭に貸出した図書が表示され、状態が「貸出中」になる</td>
+      </tr>
+      <tr>
+        <td class="code">CT-008</td><td>異常系：DBエラー時の表示</td>
+        <td>DBを停止した状態で貸出登録ボタンを押す</td>
+        <td>「システムエラーが発生しました」と表示され、エラーログが記録される</td>
+      </tr>
+    </table>
+
+    <h2 class="doc-headline">4. テストの実行記録（例）</h2>
+    <table>
+      <tr><th style="width:10%;">ケースID</th><th style="width:12%;">日付</th><th style="width:10%;">結果</th><th style="width:22%;">エビデンス</th><th>備考</th></tr>
+      <tr><td class="code">CT-001</td><td>2026/06/05</td><td>OK</td><td class="code">ev_ct001.png</td><td>－</td></tr>
+      <tr><td class="code">CT-002</td><td>2026/06/05</td><td>OK</td><td class="code">ev_ct002.png</td><td>－</td></tr>
+      <tr><td class="code">CT-003</td><td>2026/06/05</td><td>NG</td><td class="code">ev_ct003.png</td><td>貸出中の図書が登録できてしまった → 障害報告書 No.001 に起票</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：結果だけ書いて「手順」を残さない事故</span>
+      「操作手順」と「事前条件」を書かないと、半年後にこのテストを再実行する人が再現できません。
+      スクリーンショット（エビデンス）とあわせて、<strong>「いつ・誰が・どの手順で・何が起きたか」を残す</strong>
+      ことがテストの仕事です。
+    </div>
+
+    <p><span class="badge">見本</span>　配布資料05：テストケース</p>
+  </div>
+</div>
+</body>
+</html>

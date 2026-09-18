@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料12 運用設計書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　運用設計書（抜粋）</div>
+      <div class="doc-code">Ver 1.0　対象：本番稼働後（保守運用）</div>
+    </div>
+
+    <p><span class="badge">本格版</span>　※研修用の架空の設計書です。「システムを作って終わりではない」先の、運用・保守・障害対応を決める文書です。新人エンジニアが最初に配属されることの多い仕事のひとつです。</p>
+
+    <h2 class="doc-headline">1. 運用の対象と体制</h2>
+    <table>
+      <tr><th style="width:24%;">項目</th><th>内容</th></tr>
+      <tr><td>稼働時間</td><td>平日 8:00〜20:00（土日・祝日・夜間は定期バッチ実行のみ）</td></tr>
+      <tr><td>運用窓口</td><td>図書管理担当者（社内）が一次対応。技術的な問題は開発チーム（保守窓口）へエスカレーション</td></tr>
+      <tr><td>運用体制</td><td>一次対応＝利用者様（図書管理担当者）、二次対応＝開発チーム（鈴木）、監視＝自動ジョブ＋管理者への通知</td></tr>
+      <tr><td>保守契約</td><td>稼働後1年間の無償保証期間。それ以降は保守契約（稼働時間帯・問い合わせ/障害対応の範囲）を別途締結</td></tr>
+    </table>
+
+    <h2 class="doc-headline">2. 定常運用（日次／月次の作業）</h2>
+    <div class="mock">
+      <div class="mock-bar">日次チェック（毎営業日 開始時）</div>
+      <p style="margin:0 0 4px;">
+        ① システムへログインできるか確認<br>
+        ② 貸出中一覧（S01）が表示され、延滞が正しく表示されるか<br>
+        ③ 昨晩のバッチ（返却期限通知=IF-01）が正常終了したか、監視ジョブの成功通知を確認<br>
+        ④ 共有フォルダの出力ファイル（延滞一覧PDF）が出来ているか（毎月1日のみ）
+      </p>
+    </div>
+    <table>
+      <tr><th style="width:18%;">種別</th><th style="width:28%;">作業</th><th>起動条件</th></tr>
+      <tr><td>日次</td><td>返却期限通知メール送信（IF-01）</td><td>毎営業日 8:00 / 自動バッチ</td></tr>
+      <tr><td>日次</td><td>図書データ取込（IF-03）の取り込み</td><td>夜間 21:00 / 自動バッチ（エラー時は管理者へ通知）</td></tr>
+      <tr><td>月次</td><td>延滞一覧PDF出力（IF-02）の確認</td><td>毎月第1営業日 9:00</td></tr>
+      <tr><td>月次</td><td>利用者マスタ取込（IF-04）の結果確認</td><td>毎月1日 夜間バッチ前後の確認</td></tr>
+      <tr><td>年次</td><td>バックアップのリストア訓練</td><td>年1回 / 本番データでなく専用環境で実施</td></tr>
+    </table>
+
+    <h2 class="doc-headline">3. バックアップとセキュリティ</h2>
+    <table>
+      <tr><th style="width:22%;">項目</th><th>内容</th></tr>
+      <tr><td>バックアップ</td><td>日次：DBを夜間21:30に取得、2世代保存。月次：月末に共有フォルダへ退避</td></tr>
+      <tr><td>リストア手順書</td><td>障害時・移行時どちらも使う。年1回は<b>実際にリストアして動作確認</b>（“バックアップがある”のではなく“戻せる”ことを確認）</td></tr>
+      <tr><td>セキュリティ・権限</td><td>利用者ID・パスワードでログイン。管理者（利用者管理）は図書管理担当者のみに付与</td></tr>
+      <tr><td>ログ</td><td>アクセスログ・操作ログ（誰が何を登録/更新したか）を保持し、3ヶ月保存・障害時の分析に使う</td></tr>
+      <tr><td>PC・環境</td><td>サーバへのログインは開発機からは不可（保守用の専用踏み台を使う）</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：バックアップは「取得できたか」と「戻せるか」の2段階</span>
+      「毎日バックアップしています」と言っていても、リストアを1回も試したことがない（＝実際に戻せるか分からない）状態は、
+      保険に入っているのに万一の時に使えないと同じです。<strong>年1回のリストア訓練</strong>を運用計画に組み込みます。
+    </div>
+
+    <h2 class="doc-headline">4. 障害発生時の対応（一次切り分け → エスカレーション）</h2>
+    <div class="activity" style="align-items:stretch;">
+      <div class="act-step">利用者から問い合わせ・障害の連絡を受ける（保守窓口）</div>
+      <div class="act-arrow"></div>
+      <div class="act-step">事象の記録：いつ・誰が・何の操作で・どんな画面・どんなメッセージ</div>
+      <div class="act-arrow"></div>
+      <div class="act-diamond">
+        <div class="dia"></div>
+        <div class="lbl">例：確定できる機能はどれ？（操作手順・再現するか）</div>
+      </div>
+      <div class="act-branch">再現する・ログで特定 → 開発チームへエスカレーションし、障害報告書（06）に起票</div>
+      <div class="act-branch">再現しない・操作手順不明 → 証拠（画面キャプチャ・ログ）を集めて再確認を依頼</div>
+    </div>
+    <p class="sample-note">エスカレーション先・連絡手段・重要度の定義（高：業務停止／復旧要件、中：機能の一部障害、低：軽微な不具合）は、本プロジェクトでは「運用ルール」としてこの文書に添付します。</p>
+
+    <h2 class="doc-headline">5. 変更管理（運用中のプログラム・設定変更）</h2>
+    <table>
+      <tr><th style="width:26%;">項目</th><th>ルール</th></tr>
+      <tr><td>変更の申請</td><td>変更要求書（何を・なぜ・影響範囲・予定日）を作り、管理者（図書管理担当者）と開発チームで承認</td></tr>
+      <tr><td>本番変更の手順</td><td>開発環境でレビュー・テスト → 本番へ適用 → 適用後の確認記録。ロールバック方法まで明記</td></tr>
+      <tr><td>定期バッチの変更</td><td>バッチの起動時間や通知内容が変わる場合は、外部IF設計書（09）も一緒に更新する</td></tr>
+      <tr><td>記録</td><td>変更の記録は運用日誌に残し、1ヶ月ごとに「今後へ引き継ぐこと」を整理する</td></tr>
+    </table>
+
+    <div class="pointbox">
+      <span class="pointbox-title">ここを見よう（読み方）</span>
+      運用設計書は「作り終わった後、誰が・何を・どんな毎日行っているか」を決める文書です。
+      特に新人は最初に「運用」の仕事から始まるケースが多いため、<strong>この文書を読みながら「自分の仕事＝毎日の確認・記録・連絡」を
+      イメージできるか</strong>が、基準になります。障害時の「最初の1対応（切り分け）」ができるようになれば、
+      運用の仕事の卒業条件といえます。
+    </div>
+
+    <p><span class="badge">本格版</span>　配布資料12：運用設計書</p>
+  </div>
+</div>
+</body>
+</html>

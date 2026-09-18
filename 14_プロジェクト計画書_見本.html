@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料14 プロジェクト計画書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　プロジェクト計画書（本格版）</div>
+      <div class="doc-code">Ver 1.0　対象期間：2026/05/20〜2026/07/10</div>
+    </div>
+
+    <p><span class="badge">本格版</span>　※研修用の架空の設計書です。抜粋版（配布資料07）を、実際のプロジェクトで使う粒度まで書き込んだものです。<strong>管理の“全体図”</strong>として読んでください。</p>
+
+    <h2 class="doc-headline">1. プロジェクト概要</h2>
+    <table>
+      <tr><th style="width:22%;">項目</th><th>内容</th></tr>
+      <tr><td>目的</td><td>社内図書の貸出・返却をシステムで管理し、在庫把握と返却忘れ防止を実現する</td></tr>
+      <tr><td>スケジュール</td><td>2026/05/20 キックオフ → 2026/07/10 本番稼働（約50日・ウォーターフォール型）</td></tr>
+      <tr><td>予算</td><td>工数：8人・月（標準稼働）／サーバ等のインフラは社内保有のものを流用</td></tr>
+      <tr><td>成果物</td><td>要件定義書・各種設計書（外部IF含む）・ソースコード・テスト設計・テスト結果・運用マニュアル・障害対応記録</td></tr>
+      <tr><td>プロジェクトの成功条件</td><td>①本番稼働日に無事稼働する　②重要度「高」の残障害0件　③移行した貸出データ30件が正しく引き継がれる　④約定の日程どおり終了</td></tr>
+    </table>
+
+    <h2 class="doc-headline">2. 体制図と役割分担</h2>
+    <div class="classdia">
+      <div class="classbox">
+        <div class="cname">PM（プロジェクトマネージャ）</div>
+        <div class="cattrs">山田
+- 全体計画・スケジュール管理
+- 課題・リスクの最終判断
+- 利用者側との折衝</div>
+      </div>
+      <div class="rel">
+        <div class="rel-tag">指導・調整</div>
+        <div class="rel-line"></div>
+        <div class="rel-note">各担当へ<br>指示・支援</div>
+      </div>
+      <div class="classbox">
+        <div class="cname">SE（設計・レビュー）</div>
+        <div class="cattrs">佐藤・田中
+- 要件定義～詳細設計
+- レビュー参加・品質確認</div>
+      </div>
+    </div>
+    <div class="classdia">
+      <div class="classbox">
+        <div class="cname">PG（製造・単体テスト）</div>
+        <div class="cattrs">鈴木
+- 詳細設計書どおりに実装
+- 単体テスト・修正</div>
+      </div>
+      <div class="classbox">
+        <div class="cname">QA（テスト品質）</div>
+        <div class="cattrs">田中（兼務）
+- テスト計画・テストケース作成
+- テスト実施・判定・障害管理（06）</div>
+      </div>
+      <div class="classbox">
+        <div class="cname">利用者側担当</div>
+        <div class="cattrs">図書管理担当者
+- 要件確認・受入テスト
+- 運用開始後の窓口</div>
+      </div>
+    </div>
+    <div class="figure-caption">図：体制（抜粋）　小規模なので PG・QA を兼務させているが、役割（ワク）は分けている</div>
+
+    <h2 class="doc-headline">3. 進捗管理の仕組み（会議体と報告）</h2>
+    <table>
+      <tr><th style="width:22%;">仕組み</th><th>内容</th></tr>
+      <tr><td>週次進捗会議</td><td>毎週金曜 15:00（30分）。WBS（07）と進捗報告を材料に、遅延・課題・リスク・翌週の予定を共有</td></tr>
+      <tr><td>マイルストーン審査</td><td>要件定義完了・外部設計完了・テスト開始・リリース可否 の4点で「ゲート」（承認）を設定</td></tr>
+      <tr><td>進捗報告</td><td>週次の進捗（予定/実績・%・残タスク）を、担当者レベルでExcel形式で提出。PMがWBSへ反映</td></tr>
+      <tr><td>報告のルール</td><td>遅延・問題は「早めに、正直に、具体的に」上げる。報告したために怒られない運用にする（ふりかえりで毎回確認）</td></tr>
+    </table>
+    <div class="sample-note">「報告が遅れること」自体が最悪のリスクです。「1日の遅れは1日で戻すこともあるが、1週間放置した遅れはプロジェクト全体の遅れになる」をチームの合言葉にしています。</div>
+
+    <h2 class="doc-headline">4. リスク管理表（抜粋）</h2>
+    <table>
+      <tr><th style="width:8%;">No</th><th style="width:28%;">リスク（事象）</th><th style="width:10%;">影響度</th><th style="width:10%;">発生率</th><th style="width:20%;">対応（回避・低減・受容）</th><th>責任者</th></tr>
+      <tr><td>1</td><td>要件の追加・変更が増え、スケジュールが遅延する</td><td>高</td><td>中</td><td>スコープをキックオフ時に文書化（対象外を明記）、変更は変更管理（§6）で必ずPM承認</td><td>山田</td></tr>
+      <tr><td>2</td><td>要件定義段階での聞き漏れ（貸出ルール等）</td><td>高</td><td>中</td><td>ヒアリングを2回実施＋議事録を素早く確定。不明点は仮決め禁止（要設計判断で出す）</td><td>佐藤</td></tr>
+      <tr><td>3</td><td>社内保有サーバの性能・セキュリティ要件を満たさない</td><td>中</td><td>低</td><td>外部設計前に利用者側と性能要件を確認し、問題なら購入費用を予算に計上</td><td>山田</td></tr>
+      <tr><td>4</td><td>担当者の休暇・退社により作業が滞る</td><td>中</td><td>低</td><td>主要工程は2人で分担・互いのタスクを把握（バス係数を下げる）</td><td>鈴木</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：リスク表は「書いて終わり」にしない</span>
+      リスク管理表を作って満足し、次の週で読まないと何の意味もありません。<strong>毎週進捗会議で「リスクの状況が変わったか」を
+      1件ずつ更新</strong>し、「顕在化した兆候」が早い段階で見えたら対策を切替ます。これが「管理する」という意味です。
+    </div>
+
+    <h2 class="doc-headline">5. 予算・コスト管理</h2>
+    <table>
+      <tr><th style="width:24%;">項目</th><th>内容</th></tr>
+      <tr><td>工数計画</td><td>全体8人・月（設計2.5／製造3.0／テスト2.0／運用準備0.5）。月次の実績工数と予定を比較する</td></tr>
+      <tr><td>外注・調達</td><td>サーバ・DB利用は社内資産のため調達なし。新規購入はPM承認が必要</td></tr>
+      <tr><td>コストの報告</td><td>月次の進捗会議で工数実績を報告し、計画との差（超過・早期消化）を可視化する</td></tr>
+    </table>
+
+    <h2 class="doc-headline">6. 変更管理（スコープ・要件の変更ルール）</h2>
+    <table>
+      <tr><th>プロセス</th><th>ルール</th></tr>
+      <tr><td>変更要求の受付</td><td>利用者側からの変更は「変更要求書」で受付（口頭では受けない）。記載：変更内容・理由・影響（工数・日程・範囲）</td></tr>
+      <tr><td>影響の見積りと評価</td><td>PMと担当が、工数・スケジュール・範囲への影響（遅延、コスト増、他機能への影響）を評価して報告</td></tr>
+      <tr><td>承認</td><td>PM＋利用者側代表の承認サインで確定。承認前に作業を始めない（「口でOK」は承認ではない）</td></tr>
+      <tr><td>反映と追跡</td><td>承認された変更は、関連する設計書（02〜04、07）・テスト計画（10）へ反映し、変更履歴（Ver 更新）を記録</td></tr>
+    </table>
+
+    <h2 class="doc-headline">7. マイルストーン（審査ゲート）一覧</h2>
+    <div class="mock">
+      <div class="mock-bar">ゲート・マイルストーン（承認＝次工程へ進んでよい）</div>
+      <p style="margin:0 0 4px;">
+        M1 要件定義完了（05/29）→ 要件の合意サイン<br>
+        M2 外部設計完了（06/10）→ 画面IF・DB・外部IFのレビュー済<br>
+        M3 内部設計・製造完了（06/30）→ 単体テスト全件NG=0<br>
+        M4 結合・システム・受入テスト完了（07/08）→ 品質基準（10）を満たす<br>
+        M5 リリース（07/09〜10）→ 11 リリース移行計画書に従って実施、成功確定
+      </p>
+    </div>
+    <div class="pointbox">
+      <span class="pointbox-title">ここを見よう（読み方）</span>
+      「プロジェクト管理資料（07）」が「毎日の進捗を回す道具」とすれば、
+      本計画書（14）は「<strong>全体の設計図とルール</strong>」です。両者の違い＝「運用の仕組み」と「計画そのもの」と理解してください。
+      研修では、この計画を読んで「誰が・いつ・何を決める権限を持っているか」が分かるかを確認します。
+    </div>
+
+    <p><span class="badge">本格版</span>　配布資料14：プロジェクト計画書（本格版）</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,670 @@
+/* 配布資料（システム開発の基礎知識・設計書見本）共通スタイル */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #f1f5f9;
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+  color: #1e293b;
+  line-height: 1.75;
+}
+
+.page {
+  max-width: 960px;
+  margin: 32px auto 96px;
+  padding: 0 16px;
+}
+
+/* 文書（見本）の見た目 */
+.doc {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 48px 56px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.doc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #0f766e;
+  padding-bottom: 16px;
+  margin-bottom: 32px;
+}
+
+.doc-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.doc-code {
+  font-size: 0.85rem;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.doc-headline {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 28px 0 14px;
+  padding: 6px 12px;
+  background: #f0fdfa;
+  border-left: 4px solid #0f766e;
+}
+
+p {
+  font-size: 0.95rem;
+  margin: 0 0 12px;
+}
+
+ul, ol {
+  font-size: 0.95rem;
+  padding-left: 1.4em;
+  margin: 0 0 12px;
+}
+
+li {
+  margin-bottom: 6px;
+}
+
+/* 表 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 0.88rem;
+}
+
+th, td {
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f0fdfa;
+  color: #0f766e;
+  font-weight: 700;
+}
+
+tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+td.code, th.code {
+  font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+  font-size: 0.82rem;
+}
+
+/* 注意点・ポイントのボックス */
+.caution {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #991b1b;
+  font-size: 0.9rem;
+  margin: 20px 0;
+}
+
+.caution-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: block;
+  color: #7f1d1d;
+}
+
+.caution ul {
+  margin: 4px 0 0;
+}
+
+.pointbox {
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #134e4a;
+  font-size: 0.9rem;
+  margin: 20px 0;
+}
+
+.pointbox-title {
+  font-weight: 700;
+  color: #0f766e;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* 実物メモ（サンプル欄など） */
+.sample-note {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: #92400e;
+  margin: 8px 0 20px;
+}
+
+/* バッジ */
+.badge {
+  display: inline-block;
+  background: #0f766e;
+  color: #ffffff;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* 画面モック（見本表現） */
+.mock {
+  border: 2px solid #64748b;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+  margin: 12px 0 20px;
+  font-size: 0.85rem;
+}
+
+.mock .mock-bar {
+  background: #0f766e;
+  color: #ffffff;
+  border-radius: 6px 6px 0 0;
+  padding: 8px 12px;
+  font-weight: 700;
+  margin: -16px -16px 12px;
+}
+
+.mock .mock-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.mock .mock-btn {
+  background: #0d9488;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 4px 14px;
+  font-weight: 600;
+  display: inline-block;
+  border: none;
+}
+
+.mock .mock-btn.plain {
+  background: #ffffff;
+  border: 1px solid #94a3b8;
+  color: #334155;
+}
+
+.mock .mock-input {
+  border: 1px solid #94a3b8;
+  border-radius: 4px;
+  padding: 4px 8px;
+  min-width: 160px;
+  background: #ffffff;
+}
+
+/* 画面遷移図 */
+.transit {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+
+.transit .screen {
+  border: 2px solid #0d9488;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0f766e;
+  background: #f0fdfa;
+}
+
+.transit .screen.start {
+  border-color: #64748b;
+  color: #475569;
+  background: #f8fafc;
+}
+
+.transit .arrow {
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+/* ナビゲーション（一覧へ戻る） */
+.backlink {
+  display: block;
+  margin: 24px 0;
+  color: #0d9488;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.backlink:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   本格版（配布資料08〜14）用の追加スタイル
+   ============================================================ */
+
+/* 図のキャプション */
+.figure-caption {
+  font-size: 0.8rem;
+  color: #64748b;
+  text-align: center;
+  margin: 6px 0 20px;
+}
+
+/* --- ユースケース図 --- */
+.uc {
+  display: flex;
+  align-items: stretch;
+  margin: 12px 0 20px;
+}
+
+.uc-actor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px 16px 24px;
+  gap: 6px;
+}
+
+.uc-actor-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  text-align: center;
+}
+
+.uc-link {
+  width: 36px;
+  border-top: 2px solid #334155;
+  align-self: center;
+  margin: 0;
+}
+
+.uc-system {
+  flex: 1;
+  border: 2px solid #334155;
+  border-radius: 10px;
+  padding: 12px;
+  background: #ffffff;
+}
+
+.uc-system-title {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.uc-case {
+  display: table;
+  margin: 8px auto;
+  border: 1.5px solid #334155;
+  border-radius: 999px;
+  padding: 4px 18px;
+  font-size: 0.82rem;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.uc-case.major {
+  border-width: 2px;
+  font-weight: 700;
+  background: #f0fdfa;
+}
+
+/* 人型（アクター） */
+.actor {
+  width: 46px;
+  display: inline-block;
+  text-align: center;
+}
+
+.actor .actor-head {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #334155;
+  border-radius: 50%;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+.actor .actor-arms {
+  width: 30px;
+  border-top: 2px solid #334155;
+  margin: 0 auto;
+}
+
+.actor .actor-body {
+  width: 0;
+  height: 22px;
+  border-left: 2px solid #334155;
+  margin: 0 auto;
+}
+
+.actor .actor-legs {
+  width: 14px;
+  border-top: 2px solid #334155;
+  margin: 0 auto;
+}
+
+/* --- クラス図 --- */
+.classdia {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 8px;
+}
+
+.classbox {
+  border: 2px solid #334155;
+  border-radius: 6px;
+  min-width: 208px;
+  background: #ffffff;
+  flex: 0 0 auto;
+}
+
+.classbox .cname {
+  background: #0f766e;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  border-radius: 4px 4px 0 0;
+}
+
+.classbox .cattrs,
+.classbox .cmethods {
+  padding: 6px 10px;
+  border-top: 1px solid #94a3b8;
+  font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+  font-size: 0.74rem;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.rel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 68px;
+}
+
+.rel .rel-tag {
+  font-size: 0.7rem;
+  color: #0f766e;
+  background: #ecfdf5;
+  border: 1px solid #99f6e4;
+  border-radius: 99px;
+  padding: 1px 8px;
+  margin: 0 0 2px;
+}
+
+.rel .rel-line {
+  width: 100%;
+  border-top: 1.5px solid #334155;
+  position: relative;
+}
+
+.rel .rel-line.to-inherit {
+  border-top: 1.5px solid transparent;
+  background-image: linear-gradient(to right, #334155, #334155);
+  background-size: 100% 1.5px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.rel .rel-note {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 2px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.classdia-note {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 6px 0 20px;
+}
+
+/* --- シーケンス図 --- */
+.seq {
+  position: relative;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  margin: 12px 0 20px;
+  overflow: hidden;
+}
+
+.seq .participant {
+  position: absolute;
+  top: 10px;
+  transform: translateX(-50%);
+  background: #0f766e;
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.seq .participant.actor2 {
+  background: #64748b;
+}
+
+.seq .lifeline {
+  position: absolute;
+  top: 44px;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dashed #94a3b8;
+}
+
+.seq .activate {
+  position: absolute;
+  width: 8px;
+  background: #99f6e4;
+  border: 1px solid #0d9488;
+  border-radius: 2px;
+}
+
+.seq .msg {
+  position: absolute;
+  height: 0;
+  border-top: 1.5px solid #334155;
+  z-index: 1;
+}
+
+.seq .msg .lbl {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  background: #ffffff;
+  padding: 0 5px;
+  color: #334155;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.seq .msg .lbl.sync {
+  font-weight: 700;
+}
+
+.seq .msg::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid #334155;
+}
+
+.seq .msg.reply {
+  border-top: 1px dashed #64748b;
+}
+
+.seq .msg.reply::after {
+  right: auto;
+  left: -2px;
+  border-left: none;
+  border-right: 6px solid #64748b;
+}
+
+/* --- アクティビティ図 --- */
+.activity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 14px 0 6px;
+}
+
+.act-start {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 18px solid #334155;
+}
+
+.act-end {
+  width: 34px;
+  height: 34px;
+  border: 4px solid #334155;
+  border-radius: 50%;
+  background: #0f766e;
+  position: relative;
+}
+
+.act-end::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.act-step {
+  border: 1.5px solid #334155;
+  border-radius: 8px;
+  padding: 6px 22px;
+  background: #ffffff;
+  font-size: 0.8rem;
+  text-align: center;
+  color: #0f172a;
+}
+
+.act-diamond {
+  position: relative;
+  width: 150px;
+  height: 52px;
+}
+
+.act-diamond .dia {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  border: 1.5px solid #334155;
+  transform: rotate(45deg);
+  border-radius: 3px;
+}
+
+.act-diamond .lbl {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.74rem;
+  color: #0f172a;
+  text-align: center;
+  padding: 0 30px;
+}
+
+.act-arrow {
+  width: 0;
+  height: 14px;
+  border-left: 1.5px solid #334155;
+  position: relative;
+}
+
+.act-arrow::after {
+  content: "";
+  position: absolute;
+  left: -5px;
+  bottom: -1px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #334155;
+}
+
+.act-branch {
+  font-size: 0.72rem;
+  color: #0f766e;
+  font-weight: 700;
+}
+
+/* --- 本格版共通の追加要素 --- */
+.subhead {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f766e;
+  margin: 20px 0 10px;
+}
+
+.doc-headline small {
+  font-weight: 400;
+  color: #64748b;
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+
+.gate {
+  border: 2px solid #0f766e;
+  border-radius: 10px;
+  padding: 10px 18px;
+  background: #f0fdfa;
+  font-size: 0.85rem;
+  margin: 8px 0;
+  font-weight: 700;
+  color: #134e4a;
+  display: inline-block;
+}
+
+.milestone {
+  font-size: 0.85rem;
+}

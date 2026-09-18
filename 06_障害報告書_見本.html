@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料06 障害報告書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　障害報告書</div>
+      <div class="doc-code">障害No. 001　Ver 1.0</div>
+    </div>
+
+    <p><span class="badge">見本</span>　※研修用の架空の設計書です。テストケース（配布資料05）CT-003で検出した障害を例にしています。</p>
+
+    <h2 class="doc-headline">1. 障害の概要</h2>
+    <table>
+      <tr><th style="width:22%;">項目</th><th>内容</th></tr>
+      <tr><td>障害タイトル</td><td>貸出中の図書が「貸出登録」で再登録できてしまう</td></tr>
+      <tr><td>検出工程</td><td>結合テスト</td></tr>
+      <tr><td>検出日</td><td>2026/06/05</td></tr>
+      <tr><td>検出者</td><td>田中 次郎（テスター）</td></tr>
+      <tr><td>重要度（severity）</td><td>高（貸出ルールが守られず、同じ図書が2人に貸出されるため）</td></tr>
+      <tr><td>優先度</td><td>高（修正後に CT-003 を再実行する）</td></tr>
+    </table>
+
+    <h2 class="doc-headline">2. 発生環境・再現手順</h2>
+    <table>
+      <tr><th style="width:22%;">項目</th><th>内容</th></tr>
+      <tr><td>発生環境</td><td>開発環境（画面はGoogle Chrome、DBはOracle）</td></tr>
+      <tr><td>事前条件</td><td>図書B001が貸出中（M_BOOKS.status=1）である</td></tr>
+      <tr>
+        <td>再現手順</td>
+        <td>
+          ① 貸出登録画面（S03）を開く<br>
+          ② 利用者ID「U0003」を入力する<br>
+          ③ 図書ID「B001」（貸出中）を入力する<br>
+          ④ 「貸出登録」ボタンを押す
+        </td>
+      </tr>
+      <tr><td>期待結果</td><td>「この図書は現在貸出できません」と表示され、登録されない</td></tr>
+      <tr><td>実際の結果</td><td>「貸出登録が完了しました」と表示され、貸出レコードが作成され、B001が2件目の貸出記録を持った</td></tr>
+      <tr><td>エビデンス</td><td class="code">ev_ct003.png, db_log_001.txt</td></tr>
+    </table>
+
+    <h2 class="doc-headline">3. 原因と対応</h2>
+    <table>
+      <tr><th style="width:22%;">項目</th><th>内容</th></tr>
+      <tr><td>原因</td><td>貸出登録処理で、図書の在庫状態（M_BOOKS.status）を確認する工程が実装に含まれていなかった（詳細設計書の③の確認処理を読み飛ばした実装）</td></tr>
+      <tr><td>対応方針</td><td>実装に「status≠0 ならエラーを表示して登録しない」処理を追加する。詳細設計書の手順どおりに実装できていなかったため、設計書と実装の突合（レビュー）を強化する</td></tr>
+      <tr><td>対応内容</td><td>① ソースを修正　② 単体テスト・結合テスト（CT-003）を再実行　③ 同じパターン（紛失・利用停止）のテストも実施</td></tr>
+      <tr><td>担当</td><td>製造：鈴木 一郎　／　レビュー：山田 太郎</td></tr>
+      <tr><td>対応期限</td><td>2026/06/08</td></tr>
+      <tr><td>状態</td><td>対応中 → （完了時に日付と確認者を記録する）</td></tr>
+    </table>
+
+    <h2 class="doc-headline">4. 再発防止（恒久対策）</h2>
+    <ul>
+      <li>製造時の自己レビュー手順に「詳細設計書の確認条件を網羅チェック」を追加する</li>
+      <li>コードレビュー時に、入力チェック・確認条件（異常系）の実装漏れがないかを確認リストで確認する</li>
+      <li>次の開発サイクルから、本件のように「読み飛ばして効率化した実装」を見つけたら、設計書への反映を依頼する運用にする</li>
+    </ul>
+    <div class="caution">
+      <span class="caution-title">注意点：障害報告書は「責められための文書」ではない</span>
+      障害報告書の目的は「再現手順を共有して他人が確認できる」「原因を突き止めて同じ間違いを防ぐ」ことです。
+      誰が悪いかを探すのではなく、<strong>プロセスのどこに穴があったかを直す</strong>文書ととらえましょう。
+      誤字・事実誤認（日付や再現手順が違う）は、そのまま「原因追及の深さ」に影響します。
+    </div>
+
+    <p><span class="badge">見本</span>　配布資料06：障害報告書</p>
+  </div>
+</div>
+</body>
+</html>

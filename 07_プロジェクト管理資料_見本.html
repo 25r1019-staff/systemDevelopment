@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料07 プロジェクト管理資料（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　プロジェクト管理資料（抜粋）</div>
+      <div class="doc-code">対象期間：2026/05/20〜2026/07/10</div>
+    </div>
+
+    <p><span class="badge">見本</span>　※研修用の架空の設計書です。</p>
+
+    <h2 class="doc-headline">1. WBS（作業分解図）　…　製造・テスト工程の抜粋</h2>
+    <p class="sample-note">作業を「機能→タスク」に分解し、担当・期限・進捗（%）を管理します。進捗のズレはこの表で早期に発見します。</p>
+    <table>
+      <tr><th>作業</th><th>タスク</th><th>担当</th><th>開始</th><th>期限</th><th>進捗</th><th>備考</th></tr>
+      <tr><td rowspan="3">製造</td><td>S01 トップ画面の実装</td><td>鈴木</td><td>06/01</td><td>06/09</td><td>100%</td><td>－</td></tr>
+      <tr><td>S03 貸出登録の実装</td><td>鈴木</td><td>06/08</td><td>06/12</td><td>80%</td><td>「伺い」に遅れが出ている（要確認）</td></tr>
+      <tr><td>S04 返却登録の実装</td><td>佐藤</td><td>06/10</td><td>06/13</td><td>50%</td><td>－</td></tr>
+      <tr><td rowspan="2">単体テスト</td><td>S01・S03のテスト</td><td>田中</td><td>06/11</td><td>06/16</td><td>20%</td><td>仕様の確認待ち</td></tr>
+      <tr><td>S04のテスト</td><td>田中</td><td>06/14</td><td>06/17</td><td>0%</td><td>－</td></tr>
+      <tr><td>結合テスト</td><td>全機能の結合テスト</td><td>田中・山田</td><td>06/18</td><td>06/30</td><td>0%</td><td>→ 品質判定（4章）で開始判断</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：WBSの「進捗を正直に」</span>
+      「80%」が「実は動いていない」のを放置すると、遅延は埋められなくなります。
+      進捗報告は<strong>正直に・早く</strong>上げるのがルール。「報告したら怒られる」文化を作らないことが
+      管理者の仕事でもあります。
+    </div>
+
+    <h2 class="doc-headline">2. 進捗報告（週次）　…　1件目の例</h2>
+    <table>
+      <tr><th style="width:22%;">項目</th><th>内容</th></tr>
+      <tr><td>報告期間</td><td>2026/06/05（金）週</td></tr>
+      <tr><td>今週の成果</td><td>S01 トップ画面の実装完了。単体テスト着手</td></tr>
+      <tr><td>来週の予定</td><td>S03 貸出登録の実装完了、S04 返却登録の実装開始</td></tr>
+      <tr><td>課題・リスク</td><td>S03の進捗が1日遅れ。部下の田中が確認待ちの項目があるため、06/08までに設計側で回答</td></tr>
+      <tr><td>相談したいこと</td><td>S03の境界値（貸出日計算）の考え方をレビュー時間で確認したい</td></tr>
+    </table>
+
+    <h2 class="doc-headline">3. 課題管理表（イシュー管理表）　…　抜粋</h2>
+    <table>
+      <tr><th style="width:8%;">No</th><th style="width:24%;">課題</th><th style="width:15%;">起票者</th><th style="width:12%;">重要度</th><th style="width:14%;">対応期限</th><th>状態</th></tr>
+      <tr><td>1</td><td>S03で返却期限の算出方法が設計で2とおりある</td><td>田中</td><td>高</td><td>06/08</td><td>対応中（設計側で統一予定）</td></tr>
+      <tr><td>2</td><td>貸出中の図書の再登録ができる（障害No.001）</td><td>田中</td><td>高</td><td>06/08</td><td>対応中</td></tr>
+      <tr><td>3</td><td>利用者管理画面の項目追加（部署兼任対応）の要望</td><td>山田</td><td>低</td><td>07/05（次期要望として保留）</td><td>保留</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：課題は「口頭で済ませない」</span>
+      会議で話しただけで管理表に載せていない課題は、翌週には「なかったこと」になります。
+      <strong>すべての課題を1か所に集め、対応者・期限・状態を追う</strong>のが課題管理です。
+    </div>
+
+    <h2 class="doc-headline">4. 品質管理（バグ件数の推移とリリース判定）</h2>
+    <table>
+      <tr><th>週次</th><th>累積バグ件数</th><th>うち重要度「高」</th><th>対応中</th><th>備考</th></tr>
+      <tr><td>単体テスト期間</td><td>12</td><td>2</td><td>2</td><td>単体なのに高が2件：詳細設計レビューの強化が必要</td></tr>
+      <tr><td>結合テスト1週目</td><td>8</td><td>1</td><td>1</td><td>障害No.001（貸出中図書の再登録）</td></tr>
+      <tr><td>結合テスト2週目</td><td>2</td><td>0</td><td>0</td><td>品質は改善傾向</td></tr>
+    </table>
+    <table>
+      <tr><th>判定基準（ゲート）</th><th>内容</th></tr>
+      <tr><td>結合テスト完了の条件</td><td>全テストケースが実行済・重要度「高」「中」の残件が0</td></tr>
+      <tr><td>リリース（本番投入）の条件</td><td>重要度「高」の障害が0・「中」の障害がすべて対処方針決定済・受入テスト合格</td></tr>
+    </table>
+    <p class="sample-note">品質は「数値で語る」ことが基本。実感や雰囲気ではなく、バグ件数・対応状況・重要度で判断します。</p>
+
+    <p><span class="badge">見本</span>　配布資料07：プロジェクト管理資料</p>
+  </div>
+</div>
+</body>
+</html>

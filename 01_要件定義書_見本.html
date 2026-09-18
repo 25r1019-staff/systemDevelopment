@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料01 要件定義書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　要件定義書</div>
+      <div class="doc-code">Ver 1.0　2026/05/20</div>
+    </div>
+
+    <p><span class="badge">見本</span>　※研修用の架空の設計書です。</p>
+
+    <h2 class="doc-headline">1. 目的</h2>
+    <p>
+      社内の図書（技術書・参考書）の貸出・返却を手帳や口頭ではなくシステム上で管理し、
+      在庫状況の把握と返却忘れの防止を実現する。利用者（社員）がいつでも貸出状況を確認できるようにする。
+    </p>
+
+    <h2 class="doc-headline">2. 対象範囲と対象外</h2>
+    <table>
+      <tr><th style="width:30%;">対象</th><th>内容</th></tr>
+      <tr><td>対象とする業務</td><td>図書の貸出・返却・貸出状況の一覧表示・貸出期間の管理</td></tr>
+      <tr><td>対象外</td><td>
+        <ul>
+          <li>図書の購入・廃棄・発注の事務処理（他システムで運用中）</li>
+          <li>利用者の人事データの編集（人事システムの範囲）</li>
+          <li>オンライン予約機能（次期の検討事項）</li>
+        </ul>
+      </td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：対象外を書く理由</span>
+      「対象外」を明記しておくと、開発中に「予約機能も付けられる？」と言われたときに
+      「今回の対象外（要件定義書ver1.0の2章に記載）」と根拠を示して検討の俎上に上げられます。
+      曖昧なままにすると、後から機能追加の要求が止まらなくなる原因になります。
+    </div>
+
+    <h2 class="doc-headline">3. 機能要件一覧</h2>
+    <table>
+      <tr><th style="width:12%;">機能ID</th><th style="width:30%;">機能名</th><th style="width:34%;">概要</th><th>優先度</th></tr>
+      <tr><td class="code">F01</td><td>トップ画面（貸出中一覧）表示</td><td>システムを開いたときに、現在貸出中の図書一覧と利用者名を一覧表示する</td><td>必須</td></tr>
+      <tr><td class="code">F02</td><td>図書検索</td><td>書名・著者名・カテゴリで所蔵図書を検索し、貸出可能かを表示する</td><td>必須</td></tr>
+      <tr><td class="code">F03</td><td>貸出登録</td><td>利用者IDと図書IDを入力して貸出を登録する。貸出中の図書は登録できない</td><td>必須</td></tr>
+      <tr><td class="code">F04</td><td>返却登録</td><td>貸出中一覧から返却する図書を選び、返却日（=当日）を記録する</td><td>必須</td></tr>
+      <tr><td class="code">F05</td><td>利用者管理</td><td>利用者（社員）の追加・一覧表示を行う。貸出できる利用者かどうかの状態を持つ</td><td>任意</td></tr>
+      <tr><td class="code">F06</td><td>貸出期間の計算</td><td>貸出日+14日を返却期限とする。期限を過ぎた貸出は「延滞」として赤く表示する</td><td>必須</td></tr>
+    </table>
+
+    <h2 class="doc-headline">4. 画面一覧</h2>
+    <table>
+      <tr><th style="width:12%;">画面ID</th><th style="width:34%;">画面名</th><th>関連機能</th></tr>
+      <tr><td class="code">S01</td><td>トップ（貸出中一覧）画面</td><td class="code">F01, F06</td></tr>
+      <tr><td class="code">S02</td><td>図書検索画面</td><td class="code">F02</td></tr>
+      <tr><td class="code">S03</td><td>貸出登録画面</td><td class="code">F03</td></tr>
+      <tr><td class="code">S04</td><td>返却登録画面</td><td class="code">F04</td></tr>
+      <tr><td class="code">S05</td><td>利用者管理画面</td><td class="code">F05</td></tr>
+    </table>
+
+    <h2 class="doc-headline">5. 非機能要件（抜粋）</h2>
+    <table>
+      <tr><th style="width:26%;">区分</th><th>内容</th></tr>
+      <tr><td>性能</td><td>一覧表示は操作から3秒以内に表示完了する。想定利用者は50名、画面は社内イントラネットから利用する</td></tr>
+      <tr><td>可用性</td><td>営業時間内の障害時は、担当者への連絡から2時間以内に暫定対応を行う</td></tr>
+      <tr><td>セキュリティ</td><td>社員IDでログインし、利用者は自分の部署名のみ閲覧できる（個人情報の表示は最小限にする）</td></tr>
+    </table>
+    <div class="pointbox">
+      <span class="pointbox-title">ここを見よう（読み方）</span>
+      上流の文書ほど「どれだけ詳細か」ではなく<strong>「作りたいものが漏れなく・曖昧でなく書かれているか」</strong>が重要です。
+      機能ID（F01〜）は、この後の画面設計書やテストケースで「どの機能の話か」を対応付けるために使われます。
+    </div>
+
+    <p><span class="badge">見本</span>　配布資料01：要件定義書</p>
+  </div>
+</div>
+</body>
+</html>

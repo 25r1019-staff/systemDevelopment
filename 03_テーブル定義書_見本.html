@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料03 テーブル定義書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　テーブル定義書（DB設計書・抜粋）</div>
+      <div class="doc-code">Ver 1.0　対応機能：F01〜F06</div>
+    </div>
+
+    <p><span class="badge">見本</span>　※研修用の架空の設計書です。</p>
+
+    <h2 class="doc-headline">1. エンティティ（データのまとまり）一覧</h2>
+    <table>
+      <tr><th style="width:12%;">No</th><th style="width:24%;">エンティティ</th><th style="width:18%;">テーブル名</th><th>内容</th></tr>
+      <tr><td>1</td><td>図書</td><td class="code">M_BOOKS</td><td>所蔵している図書の基本情報</td></tr>
+      <tr><td>2</td><td>利用者</td><td class="code">M_USERS</td><td>貸出を利用できる社員の情報</td></tr>
+      <tr><td>3</td><td>貸出</td><td class="code">T_LOANS</td><td>どの図書を誰がいつ借り・返したかの記録</td></tr>
+    </table>
+
+    <h2 class="doc-headline">2. ER関係図（概要）</h2>
+    <table>
+      <tr>
+        <td style="width:33%; text-align:center; background:#f0fdfa;">
+          <strong>利用者（M_USERS）</strong><br><span class="code">利用者ID(PK)</span><br>氏名、部署、貸出可否
+        </td>
+        <td style="width:33%; text-align:center; background:#f0fdfa;">
+          <strong>図書（M_BOOKS）</strong><br><span class="code">図書ID(PK)</span><br>書名、著者、カテゴリ、在庫状態
+        </td>
+        <td style="width:33%; text-align:center; background:#f0fdfa;">
+          <strong>貸出（T_LOANS）</strong><br><span class="code">貸出ID(PK)</span><br>利用者ID(FK)、図書ID(FK)、貸出日、返却期限、返却日
+        </td>
+      </tr>
+    </table>
+    <p class="sample-note">※簡略表現。実際のER図では1対多の関係（1人の利用者に対し複数の貸出）を線と記号で示します。研修では関係の向きを「利用者が複数の貸出を持てる／1冊の図書が同時に複数の貸出を持つことはない」と文章でも定義します。</p>
+
+    <h2 class="doc-headline">3. テーブル定義</h2>
+
+    <h3 style="margin-top:20px;">M_BOOKS（図書マスタ）</h3>
+    <table>
+      <tr><th>列名</th><th>型・長さ</th><th>NULL</th><th>キー</th><th>内容・備考</th></tr>
+      <tr><td class="code">book_id</td><td class="code">CHAR(4)</td><td>不可</td><td>主キー</td><td>図書ID（例：B001）</td></tr>
+      <tr><td class="code">title</td><td class="code">VARCHAR(100)</td><td>不可</td><td></td><td>書名</td></tr>
+      <tr><td class="code">author</td><td class="code">VARCHAR(50)</td><td>可</td><td></td><td>著者名</td></tr>
+      <tr><td class="code">category</td><td class="code">CHAR(1)</td><td>不可</td><td></td><td>カテゴリコード（別途定義表参照）</td></tr>
+      <tr><td class="code">status</td><td class="code">CHAR(1)</td><td>不可</td><td></td><td>在庫状態 0:貸出可 1:貸出中 2:紛失</td></tr>
+    </table>
+
+    <h3 style="margin-top:20px;">M_USERS（利用者マスタ）</h3>
+    <table>
+      <tr><th>列名</th><th>型・長さ</th><th>NULL</th><th>キー</th><th>内容・備考</th></tr>
+      <tr><td class="code">user_id</td><td class="code">CHAR(5)</td><td>不可</td><td>主キー</td><td>利用者ID（例：U0001）</td></tr>
+      <tr><td class="code">user_name</td><td class="code">VARCHAR(50)</td><td>不可</td><td></td><td>氏名</td></tr>
+      <tr><td class="code">dept</td><td class="code">VARCHAR(30)</td><td>不可</td><td></td><td>部署名</td></tr>
+      <tr><td class="code">loaning</td><td class="code">CHAR(1)</td><td>不可</td><td></td><td>貸出可否 0:貸出可 1:利用停止（退職・未返却等）</td></tr>
+    </table>
+
+    <h3 style="margin-top:20px;">T_LOANS（貸出履歴）</h3>
+    <table>
+      <tr><th>列名</th><th>型・長さ</th><th>NULL</th><th>キー</th><th>内容・備考</th></tr>
+      <tr><td class="code">loan_id</td><td class="code">INT</td><td>不可</td><td>主キー</td><td>貸出ID（連番・自動採番）</td></tr>
+      <tr><td class="code">user_id</td><td class="code">CHAR(5)</td><td>不可</td><td>外部キー</td><td>利用者ID（M_USERS.user_id を参照）</td></tr>
+      <tr><td class="code">book_id</td><td class="code">CHAR(4)</td><td>不可</td><td>外部キー</td><td>図書ID（M_BOOKS.book_id を参照）</td></tr>
+      <tr><td class="code">loan_date</td><td class="code">DATE</td><td>不可</td><td></td><td>貸出日</td></tr>
+      <tr><td class="code">return_plan</td><td class="code">DATE</td><td>不可</td><td></td><td>返却期限（貸出日+14日をシステムで算出）</td></tr>
+      <tr><td class="code">return_date</td><td class="code">DATE</td><td>可</td><td></td><td>返却日。未返却の間はNULL</td></tr>
+    </table>
+
+    <h2 class="doc-headline">4. コード値定義（抜粋）</h2>
+    <table>
+      <tr><th>項目</th><th>値</th><th>意味</th><th>表示色例</th></tr>
+      <tr><td rowspan="3">在庫状態（M_BOOKS.status）</td><td class="code">0</td><td>貸出可</td><td>通常表示</td></tr>
+      <tr><td class="code">1</td><td>貸出中</td><td>グレー表示</td></tr>
+      <tr><td class="code">2</td><td>紛失</td><td>グレー表示＋「紛失」の注記</td></tr>
+      <tr><td rowspan="2">貸出可否（M_USERS.loaning）</td><td class="code">0</td><td>貸出可</td><td>－</td></tr>
+      <tr><td class="code">1</td><td>利用停止</td><td>貸出登録時にエラー</td></tr>
+      <tr><td rowspan="2">一覧の状態表示（画面）</td><td class="code">0</td><td>貸出中</td><td>通常表示</td></tr>
+      <tr><td class="code">1</td><td>延滞（返却期限を過ぎた）</td><td>赤字で表示</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：コード値は「値の意味」まで定義する</span>
+      データベースには「0」「1」のような数字しか入りません。コード値定義表が無いと、
+      「status=1は貸出中ですか？ それとも延滞ですか？」と、場面ごとに解釈が違う事故が起きます。
+      <strong>値の意味・表示・色まで、定義表に書いて全員で共有する</strong>のがテーブル定義書の役割です。
+    </div>
+
+    <p><span class="badge">見本</span>　配布資料03：テーブル定義書</p>
+  </div>
+</div>
+</body>
+</html>
