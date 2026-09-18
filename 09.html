@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料09 外部IF設計書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　外部IF設計書（抜粋）</div>
+      <div class="doc-code">Ver 1.0　対応機能：F06・F07<br>外部設計（基本設計）の一部</div>
+    </div>
+
+    <p><span class="badge">本格版</span>　※研修用の架空の設計書です。「外部インターフェース（IF）」＝システムの外とのやり取りを、相手先と取り決める文書です。</p>
+
+    <h2 class="doc-headline">1. 外部IFとは<small>この文書が「何を決める文書」か</small></h2>
+    <p>
+      外部IF（外部インターフェース）とは、このシステムと「外」とのデータのやり取りのことです。
+      画面IF（人が入力する）以外に、以下のような<strong>システム間・バッチ・帳票・通知</strong>の取り決めをここで定義します。
+    </p>
+    <table>
+      <tr><th style="width:16%;">区分</th><th style="width:30%;">例</th><th>取り決めの中心</th></tr>
+      <tr>
+        <td>画面IF</td><td>各画面・ボタン操作</td>
+        <td>画面設計書（02）・詳細設計書（04）で定義。本設計書では扱わない。</td>
+      </tr>
+      <tr>
+        <td>バッチIF</td><td>返却期限通知メールの自動送信、延滞一覧のPDF出力</td>
+        <td>バッチの起動条件・出力内容・メール送信先の取得方法</td>
+      </tr>
+      <tr>
+        <td>ファイルIF</td><td>図書データの一括読み込み（CSV）、利用者データの一括読み込み（CSV）</td>
+        <td>ファイル名・レコード形式・文字コード・取り込み時のエラー処理</td>
+      </tr>
+      <tr>
+        <td>データ移行IF</td><td>旧システム（手帳管理）からの貸出データ移行</td>
+        <td>リリース移行計画書（11）と本設計書の双方で定義</td>
+      </tr>
+    </table>
+
+    <h2 class="doc-headline">2. 外部IF一覧</h2>
+    <table>
+      <tr><th style="width:10%;">IF ID</th><th style="width:22%;">IF名</th><th style="width:12%;">種別</th><th style="width:14%;">方向</th><th style="width:16%;">頻度</th><th>概要</th></tr>
+      <tr><td class="code">IF-01</td><td>返却期限通知メール</td><td>バッチ</td><td>システム → 社内メール</td><td>毎営業日 8:00</td><td>返却期限の5日前になった貸出中の利用者に、期限をお知らせする</td></tr>
+      <tr><td class="code">IF-02</td><td>延滞一覧の出力（PDF）</td><td>バッチ</td><td>システム → 共有フォルダ</td><td>毎月第1営業日 9:00</td><td>延滞中の貸出一覧を、管理者向けにPDFで出力する</td></tr>
+      <tr><td class="code">IF-03</td><td>図書データ取込</td><td>ファイル</td><td>CSV → システム</td><td>随時（夜間バッチ）</td><td>図書の新規・更新データをまとめて取り込む（初期登録時・追加購入時）</td></tr>
+      <tr><td class="code">IF-04</td><td>利用者データ取込</td><td>ファイル</td><td>CSV → システム</td><td>月1回</td><td>人事システムから出力された利用者情報を反映する</td></tr>
+      <tr><td class="code">IF-05</td><td>貸出データ移行取込</td><td>ファイル</td><td>CSV → システム</td><td>本番移行時1回</td><td>旧環境の貸出中データを移行する（詳細は配布資料11）</td></tr>
+    </table>
+
+    <h2 class="doc-headline">3. 主要IFの詳細　IF-03：図書データ取込</h2>
+    <div class="sample-note">
+      ファイル形式の詳細（ファイル名規則・文字コード・レコード項目）をここで定義します。図書IDの形式などはテーブル定義書（03）と一致させます。
+    </div>
+    <table>
+      <tr><th style="width:24%;">項目</th><th>内容</th></tr>
+      <tr><td>ファイル名</td><td class="code">BOOKS_YYYYMMDD_HHMMSS.csv</td></tr>
+      <tr><td>文字コード</td><td>UTF-8（BOMなし）／改行 LF</td></tr>
+      <tr><td>1行目</td><td>ヘッダ行（項目名）</td></tr>
+      <tr><td>カラム定義</td><td class="code">book_id, title, author, category, status</td></tr>
+      <tr><td>取得元</td><td>図書管理担当者が用意するCSVを、共有フォルダへ格納</td></tr>
+      <tr><td>取込方式</td><td>夜間バッチ（21:00）で取り込み、正常・異常の結果を日報メールで通知（IF-01とは別に管理者宛）</td></tr>
+    </table>
+    <h3 class="subhead">4. エラー時の動作（取込バッチ）</h3>
+    <table>
+      <tr><th style="width:26%;">エラー</th><th>動作</th></tr>
+      <tr><td>ファイルが見つからない</td><td>処理を打ち切り、管理者宛にエラーメール「図書データ取込ファイルがありません」を通知する</td></tr>
+      <tr><td>1件でも形式不正</td><td>そのファイル全体の取り込みをロールバックし、エラー行番号と理由を管理画面に表示する</td></tr>
+      <tr><td>book_id 重複（既存＋新規）</td><td>既存は項目更新、新規は追加とする（「猶予のINSERT OR UPDATE」）。重複するものはERROR通知のみ行う</td></tr>
+      <tr><td>取込件数が0件</td><td>正常終了だが、日報メールに「0件」と明記し管理者が確認する</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：外部IFは「相手」と立場を合わせて決める</span>
+      文字コード・改行コード・時刻・タイムゾーン・エラー時の通知先は、<strong>相手先（人事システム担当者など）と
+      取り決めて記録に残す</strong>ことが重要です。こちら側だけで決めた取り決めは、「ファイルが文字化けする」
+      「LF が CRLF だった」など、結合テストで必ずもつれます。取り決め書を交わした相手の名前も残しましょう。
+    </div>
+
+    <h2 class="doc-headline">5. エラーコード一覧（システム共通）</h2>
+    <table>
+      <tr><th style="width:12%;">コード</th><th style="width:28%;">メッセージ</th><th>説明・発生例</th></tr>
+      <tr><td class="code">E1001</td><td>入力内容を確認してください</td><td>画面入力の必須・形式エラー（詳細設計書 04 の確認条件）</td></tr>
+      <tr><td class="code">E2001</td><td>利用者IDが見つかりません</td><td>貸出登録・返却登録で、存在しない利用者IDが入力された</td></tr>
+      <tr><td class="code">E2002</td><td>この利用者は貸出できません</td><td>利用停止中（loaning=1）の利用者</td></tr>
+      <tr><td class="code">E2003</td><td>この図書は現在貸出できません</td><td>貸出中（status=1）や紛失（status=2）の図書</td></tr>
+      <tr><td class="code">E5001</td><td>システムエラーが発生しました</td><td>DB接続失敗・想定外の例外（詳細設計書 04 の例外処理）</td></tr>
+    </table>
+    <p class="sample-note">エラーコードは「メッセージだけ」でなく、コード化して番号を振っておくと、運用後の問い合わせ（「どの画面で出たエラーですか？」）と障害分析（エラーログ検索）が速くなります。</p>
+
+    <h2 class="doc-headline">6. タイムアウト・再実行・監視の取り決め</h2>
+    <table>
+      <tr><th style="width:26%;">項目</th><th>定義</th></tr>
+      <tr><td>バッチの多重実行</td><td>排他制御：既に実行中の場合、そのバッチは再実行しない（前の処理が終わるまで待つ）</td></tr>
+      <tr><td>バッチの監視</td><td>毎朝 9:00 までに完了していることを監視ジョブで確認し、未完は管理者へ即時メール通知</td></tr>
+      <tr><td>メール送信</td><td>送信済みメールの件名・宛先・送信日時をログに記録し、再送可能なように保持する</td></tr>
+      <tr><td>データ移行の再実行</td><td>移行処理は冪等（何度実行しても同じ結果）になるよう、事前に同じデータで2回実行しても問題ないことを移行テストで確認する</td></tr>
+    </table>
+
+    <div class="pointbox">
+      <span class="pointbox-title">ここを見よう（読み方）</span>
+      外部IF設計書は「<strong>相手先が誰か・どこまで取り決めたか</strong>」に着目して読みます。
+      実プロジェクトでは画面設計書ほど頻繁に触りませんが、障害の多い場所は「外との接続」なので、
+      本番稼働後に検索されることが多い文書でもあります。本文書のバージョン管理（Ver）を特に丁寧に。
+    </div>
+
+    <p><span class="badge">本格版</span>　配布資料09：外部IF設計書</p>
+  </div>
+</div>
+</body>
+</html>

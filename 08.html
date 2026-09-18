@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料08 UML設計書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　UML設計書（抜粋）</div>
+      <div class="doc-code">Ver 1.0　対応機能：F01〜F06<br>外部設計（基本設計）の一部</div>
+    </div>
+
+    <p><span class="badge">本格版</span>　※研修用の架空の設計書です。抜粋版（01〜07）の同じシステムを、モデリング図（UML）で表現し直したものです。</p>
+
+    <h2 class="doc-headline">0. UML設計書の位置づけ<small>この文書が「何を決める文書」か</small></h2>
+    <p>
+      本プロジェクトでは、要件定義書の機能一覧（F01〜F06）をうけて、外部設計・内部設計の文書群とあわせて
+      <strong>モデリング図（UML）</strong>を作成します。図は文章（要件定義書・画面設計書）を補完するためのもので、
+      図単体で仕様を定義するのではなく、<strong>「図＋文章」で一意に内容が伝わるように</strong>します。
+    </p>
+    <p>
+      本見本では ②ユースケース図 ③クラス図 ④シーケンス図 ⑤アクティビティ図 の代表例を掲載しています。
+      実際のプロジェクトでは、対象範囲（作る機能の数）に応じて図を追加・削除します。
+    </p>
+
+    <h2 class="doc-headline">1. ユースケース図（誰が何ができるか）</h2>
+    <div class="uc">
+      <div class="uc-actor">
+        <div class="actor">
+          <div class="actor-head"></div>
+          <div class="actor-arms"></div>
+          <div class="actor-body"></div>
+          <div class="actor-legs"></div>
+        </div>
+        <div class="uc-actor-label">利用者<br>（社員）</div>
+      </div>
+      <div class="uc-link"></div>
+      <div class="uc-system">
+        <div class="uc-system-title">図書貸出管理システム</div>
+        <div class="uc-case major">貸出登録</div>
+        <div class="uc-case major">返却登録</div>
+        <div class="uc-case">貸出状況照会（トップ）</div>
+        <div class="uc-case">図書検索</div>
+      </div>
+    </div>
+    <div class="uc">
+      <div class="uc-actor">
+        <div class="actor">
+          <div class="actor-head"></div>
+          <div class="actor-arms"></div>
+          <div class="actor-body"></div>
+          <div class="actor-legs"></div>
+        </div>
+        <div class="uc-actor-label">管理者<br>（運用担当）</div>
+      </div>
+      <div class="uc-link"></div>
+      <div class="uc-system">
+        <div class="uc-system-title">図書貸出管理システム</div>
+        <div class="uc-case">利用者管理</div>
+        <div class="uc-case">延滞一覧の出力</div>
+      </div>
+    </div>
+    <div class="figure-caption">図：ユースケース図（抜粋）　太枠＝今回の必須機能、細枠＝任意／管理者向け機能</div>
+    <div class="pointbox">
+      <span class="pointbox-title">読み方：人形＝「誰が」、楕円＝「何ができるか」</span>
+      ユースケース図は「システムは誰に何を提供するのか」を1枚で示す俯瞰図です。
+      「どの画面が」「どの機能に」ではなく、「<strong>どの利用者（役割）が使える機能なのか</strong>」に着目します。
+      ここで役割（アクター）を整理しておくと、後で権限管理（管理者だけ利用者管理）の設計に直結します。
+    </div>
+
+    <h2 class="doc-headline">2. クラス図（システムの中の「もの」と「関係」）</h2>
+    <div class="classdia">
+      <div class="classbox">
+        <div class="cname">利用者（User）</div>
+        <div class="cattrs">- user_id : CHAR(5)
+- user_name : VARCHAR(50)
+- dept : VARCHAR(30)
+- loaning : CHAR(1)</div>
+        <div class="cmethods">+ 貸出できる？(): boolean
++ 貸出中の一覧()</div>
+      </div>
+      <div class="rel">
+        <div class="rel-tag">1 ─ 0..*</div>
+        <div class="rel-line"></div>
+        <div class="rel-note">1人の利用者が<br>複数の貸出を持つ</div>
+      </div>
+      <div class="classbox">
+        <div class="cname">貸出（Loan）</div>
+        <div class="cattrs">- loan_id : INT
+- book_id : CHAR(4)
+- user_id : CHAR(5)
+- loan_date : DATE
+- return_plan : DATE
+- return_date : DATE(未返却はNULL)</div>
+        <div class="cmethods">+ 延滞？(): boolean
++ 返却済み？(): boolean</div>
+      </div>
+    </div>
+    <div class="classdia">
+      <div class="classbox">
+        <div class="cname">図書（Book）</div>
+        <div class="cattrs">- book_id : CHAR(4)
+- title : VARCHAR(100)
+- author : VARCHAR(50)
+- category : CHAR(1)
+- status : CHAR(1)</div>
+        <div class="cmethods">+ 貸出できますか？(): boolean
++ 在庫状態を確認()</div>
+      </div>
+      <div class="rel">
+        <div class="rel-tag">0..* ─ 1</div>
+        <div class="rel-line"></div>
+        <div class="rel-note">貸出履歴は図書ごとに<br>複数あってよい</div>
+      </div>
+      <div class="classbox">
+        <div class="cname">貸出管理（LoanManager）</div>
+        <div class="cattrs">（サービス層）</div>
+        <div class="cmethods">+ 貸出を登録する()
++ 返却を登録する()
++ 貸出一覧を取得する()</div>
+      </div>
+      <div class="rel">
+        <div class="rel-tag">依存</div>
+        <div class="rel-line to-inherit"></div>
+        <div class="rel-note">LoanManagerは<br>利用者・図書・貸出を使う</div>
+      </div>
+      <div class="classbox">
+        <div class="cname">図書DB / 画面入力</div>
+        <div class="cattrs">※ 図は省略し文章で定義する対象</div>
+      </div>
+    </div>
+    <div class="figure-caption">図：クラス図（抜粋）　属性名はテーブル定義書（配布資料03）の列名と一致させています</div>
+    <div class="caution">
+      <span class="caution-title">注意点：クラス図とテーブル定義を「同じ言葉」で書く</span>
+      クラス図の属性名（book_id など）と、テーブル定義書（03）の列名がズレていると、
+      実装者が「コレはどっちに合わせるんだ？」と迷います。図は絵ではなく
+      <strong>ほかの設計書との整合性が命</strong>です。多重度まで省略せず、必ず文章でも補足します。
+    </div>
+
+    <h2 class="doc-headline">3. シーケンス図（機能を「時間の流れ」で見る）</h2>
+    <p style="margin-bottom:8px;">貸出登録（F03）の処理の流れを、時間軸で表します。詳細設計書（配布資料04）の手順と同じ順序になっていることを確認できます。</p>
+    <div class="seq" style="height:290px;">
+      <div class="lifeline" style="left:8%;"></div>
+      <div class="lifeline" style="left:32%;"></div>
+      <div class="lifeline" style="left:60%;"></div>
+      <div class="lifeline" style="left:86%;"></div>
+
+      <div class="participant actor2" style="left:8%;">職員</div>
+      <div class="participant" style="left:32%;">S03 画面</div>
+      <div class="participant" style="left:60%;">LoanManager</div>
+      <div class="participant" style="left:86%;">DB</div>
+
+      <div class="activate" style="left:59.6%; top:92px; height:140px;"></div>
+
+      <div class="msg" style="left:8%; right:68%; top:76px;">
+        <span class="lbl">利用者ID・図書IDを入力して送信</span>
+      </div>
+      <div class="msg" style="left:32%; right:40%; top:104px;">
+        <span class="lbl sync">貸出登録を依頼する()</span>
+      </div>
+      <div class="msg" style="left:60%; right:14%; top:128px;">
+        <span class="lbl">利用者・図書の確認SQL</span>
+      </div>
+      <div class="msg reply" style="left:86%; right:40%; top:150px;">
+        <span class="lbl">確認結果（OK）</span>
+      </div>
+      <div class="msg" style="left:60%; right:14%; top:174px;">
+        <span class="lbl">貸出INSERT＋図書状態UPDATE</span>
+      </div>
+      <div class="msg reply" style="left:86%; right:40%; top:196px;">
+        <span class="lbl">登録完了</span>
+      </div>
+      <div class="msg reply" style="left:60%; right:68%; top:220px;">
+        <span class="lbl">登録結果（成功）</span>
+      </div>
+    </div>
+    <div class="figure-caption">図：貸出登録のシーケンス図（抜粋）　「同期」と「返信（破線）」で呼び出しと戻りを表す</div>
+    <div class="pointbox">
+      <span class="pointbox-title">読み方：シーケンス図は「順序のバグ」を見つける道具</span>
+      ①確認→②登録→③遷移、という順序が図に載っているので、開発中の「先に更新してから確認していた」ような
+      実装ミスをレビューで見つけられます。詳細設計書（04）の処理手順と照らし合わせて読みます。
+    </div>
+
+    <h2 class="doc-headline">4. アクティビティ図（処理の分岐と抜け漏れを見る）</h2>
+    <p style="margin-bottom:8px;">貸出登録（F03）の判断分岐を、フローチャートに似た形で表します。</p>
+    <div class="activity">
+      <div class="act-start"></div>
+      <div class="act-arrow"></div>
+      <div class="act-step">① 入力チェック（必須・形式）</div>
+      <div class="act-arrow"></div>
+      <div class="act-diamond">
+        <div class="dia"></div>
+        <div class="lbl">入力は正しい？</div>
+      </div>
+      <div class="act-branch">No：エラー表示して終了（右に分岐）</div>
+      <div class="act-arrow"></div>
+      <div class="act-step">② 利用者を照会（存在・貸出可否）</div>
+      <div class="act-arrow"></div>
+      <div class="act-diamond">
+        <div class="dia"></div>
+        <div class="lbl">貸出できる利用者？</div>
+      </div>
+      <div class="act-branch">No：「貸出できません」表示して終了</div>
+      <div class="act-arrow"></div>
+      <div class="act-step">③ 図書を照会（存在・貸出中でない）</div>
+      <div class="act-arrow"></div>
+      <div class="act-diamond">
+        <div class="dia"></div>
+        <div class="lbl">貸出できる図書？</div>
+      </div>
+      <div class="act-branch">No：「貸出できません」表示して終了</div>
+      <div class="act-arrow"></div>
+      <div class="act-step">④ 貸出登録＋図書状態を「貸出中」に更新</div>
+      <div class="act-arrow"></div>
+      <div class="act-step">⑤ 完了メッセージ表示 → トップへ遷移</div>
+      <div class="act-arrow"></div>
+      <div class="act-end"></div>
+    </div>
+    <div class="figure-caption">図：貸出登録のアクティビティ図（抜粋・分岐先の配置を簡略化）</div>
+    <div class="caution">
+      <span class="caution-title">注意点：図は「簡略化」でも文章では欠かさない</span>
+      上の図は「No」の分岐を横に省略しています。実際の設計書では分岐先もきちんと描くか、
+      本文に「No の場合 → エラーメッセージMB-001 を表示して S03 に留まる」と書いて
+      <strong>図の省略を文章で補完</strong>します。図だけ見て実装する人が、誤解で終了処理を書かないと
+      後で事故になります。
+    </div>
+
+    <h2 class="doc-headline">5. モデリング図を使う際の共通ルール（本プロジェクト）</h2>
+    <table>
+      <tr><th style="width:24%;">ルール</th><th>内容</th></tr>
+      <tr><td>図と文章の併記</td><td>図だけの定義を禁止。必ず文章で仕様を補足する（図は「検討・説明・レビュー」の道具）。</td></tr>
+      <tr><td>用語の統一</td><td>図中の名称は、要件定義書（01）の機能ID・画面設計書（02）の画面ID・テーブル定義書（03）の列名と一致させる。</td></tr>
+      <tr><td>省略の明記</td><td>紙面のために省略した要素がある場合、「抜粋」と明記し、該当箇所を記載した文書名を示す。</td></tr>
+      <tr><td>更新管理</td><td>図を修正したら、テーブル定義書など影響のある文書へ必ず反映を依頼する（Ver と変更履歴を付ける）。</td></tr>
+    </table>
+    <div class="pointbox">
+      <span class="pointbox-title">ここを見よう（読み方）</span>
+      クラス図・シーケンス図は「<strong>ほかの設計書と比べて読み直す</strong>」ものだと覚えてください。
+      必要なのは「図が描ける」ことより「図と文書の間のズレに気づける」ことです。研修では、この見本と配布資料03（テーブル定義書）を
+      見比べて、属性名が一致しているか探してみてください。
+    </div>
+
+    <p><span class="badge">本格版</span>　配布資料08：UML設計書</p>
+  </div>
+</div>
+</body>
+</html>

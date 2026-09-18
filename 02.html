@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>配布資料02 画面設計書（見本） | システム開発の基礎知識</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+  <a class="backlink" href="index.html">&larr; 配布資料一覧に戻る</a>
+  <div class="doc">
+
+    <div class="doc-head">
+      <div class="doc-title">社内図書貸出管理システム　画面設計書（抜粋）</div>
+      <div class="doc-code">Ver 1.0　対応機能：F01・F03</div>
+    </div>
+
+    <p><span class="badge">見本</span>　※研修用の架空の設計書です。</p>
+
+    <h2 class="doc-headline">1. 画面遷移図（全体）</h2>
+    <div class="transit">
+      <div class="screen start">S01 トップ<br>(貸出中一覧)</div>
+      <div class="arrow">&rarr;</div>
+      <div class="screen">S02 図書検索</div>
+      <div class="arrow">&rarr;</div>
+      <div class="screen">S03 貸出登録</div>
+      <div class="arrow">&#8630;</div>
+      <div class="screen">S01 に戻る</div>
+    </div>
+    <div class="transit">
+      <div class="screen start">S01 トップ<br>(貸出中一覧)</div>
+      <div class="arrow">&rarr;</div>
+      <div class="screen">S04 返却登録</div>
+      <div class="arrow">&#8630;</div>
+      <div class="screen">S01 に戻る</div>
+    </div>
+    <p class="sample-note">※サンプルでは主要2画面（遷移と貸出登録）を記載。本文書には全画面分の遷移・レイアウト・項目定義が続く。</p>
+
+    <h2 class="doc-headline">2. S01 トップ（貸出中一覧）画面</h2>
+    <div class="mock">
+      <div class="mock-bar">図書貸出管理システム　トップ</div>
+      <div class="mock-row">ユーザー：<span style="font-weight:700;">山田 太郎</span>　<span class="mock-btn plain">図書検索</span>　<span class="mock-btn plain">返却登録</span>　<span class="mock-btn plain">利用者管理</span></div>
+      <table style="font-size:0.82rem;margin:8px 0 0;">
+        <tr><th>図書ID</th><th>書名</th><th>利用者名</th><th>貸出日</th><th>返却期限</th><th>状態</th></tr>
+        <tr><td class="code">B001</td><td>TypeScript入門</td><td>佐藤 花子</td><td>2026/05/10</td><td>2026/05/24</td><td>延滞</td></tr>
+        <tr><td class="code">B002</td><td>SQLの教科書</td><td>鈴木 一郎</td><td>2026/05/15</td><td>2026/05/29</td><td>貸出中</td></tr>
+        <tr><td class="code">B003</td><td>Webデザイン入門</td><td>田中 次郎</td><td>2026/05/18</td><td>2026/06/01</td><td>貸出中</td></tr>
+      </table>
+    </div>
+
+    <h2 class="doc-headline">3. S01 項目定義</h2>
+    <table>
+      <tr><th>項目</th><th>型・桁数</th><th>必須</th><th>備考</th></tr>
+      <tr><td>図書ID</td><td class="code">CHAR(4)</td><td>－（表示）</td><td>データベースの図書IDを表示（B+数字3桁）</td></tr>
+      <tr><td>書名</td><td class="code">VARCHAR(100)</td><td>－（表示）</td><td>最大100文字</td></tr>
+      <tr><td>利用者名</td><td class="code">VARCHAR(50)</td><td>－（表示）</td><td>貸出中の利用者名</td></tr>
+      <tr><td>返却期限</td><td class="code">DATE</td><td>－（表示）</td><td>貸出日+14日。当日を過ぎたら状態=延滞</td></tr>
+      <tr><td>状態</td><td class="code">CHAR(1)</td><td>－（表示）</td><td>0:貸出中 1:延滞（赤字表示）</td></tr>
+    </table>
+
+    <h2 class="doc-headline">4. S03 貸出登録画面</h2>
+    <div class="mock">
+      <div class="mock-bar">貸出登録</div>
+      <div class="mock-row">利用者ID：<span class="mock-input">U0001</span></div>
+      <div class="mock-row">図書ID：<span class="mock-input">B001</span></div>
+      <div class="mock-row"><span class="mock-btn">貸出登録</span>　<span class="mock-btn plain">戻る</span></div>
+    </div>
+
+    <h2 class="doc-headline">5. S03 項目定義・ボタン動作</h2>
+    <table>
+      <tr><th>項目</th><th>型・桁数</th><th>必須</th><th>入力チェック</th></tr>
+      <tr><td>利用者ID</td><td class="code">CHAR(5)</td><td>必須</td><td>半角英数字5桁・存在する利用者か（利用停止中でないか）</td></tr>
+      <tr><td>図書ID</td><td class="code">CHAR(4)</td><td>必須</td><td>半角英数字4桁・存在する図書か・貸出中でないか</td></tr>
+    </table>
+    <table>
+      <tr><th style="width:26%;">ボタン</th><th>動作</th></tr>
+      <tr><td>貸出登録</td><td>入力チェックOKなら貸出を登録（詳細設計書の処理参照）し、「貸出登録が完了しました」と表示してトップ画面に遷移する</td></tr>
+      <tr><td>戻る</td><td>入力内容を保存せずトップ画面（S01）に戻る</td></tr>
+    </table>
+    <div class="caution">
+      <span class="caution-title">注意点：この「動作」が抜けると何が起きるか</span>
+      「貸出登録ボタンを押すと登録される」だけしか書かれていないと、
+      ①入力値のおかしいとき、②登録できなかったとき、③ボタンを再度押したとき、
+      の動きが製造担当者ごとにバラバラになります。「成功したら何を表示してどこへ行くか」まで決めるのが外部設計の仕事です。
+    </div>
+
+    <h2 class="doc-headline">6. 参考：排出画面（完了メッセージ）</h2>
+    <div class="mock">
+      <div class="mock-bar">貸出登録</div>
+      <p style="margin:8px 0;">貸出登録が完了しました。</p>
+      <p style="margin:0;">図書ID：B001　書名：TypeScript入門　利用者：佐藤 花子</p>
+      <p style="margin:8px 0 0;">返却期限：2026/06/08</p>
+      <span class="mock-btn plain">トップに戻る</span>
+    </div>
+
+    <p><span class="badge">見本</span>　配布資料02：画面設計書</p>
+  </div>
+</div>
+</body>
+</html>
